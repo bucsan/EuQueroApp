@@ -11,14 +11,13 @@ public class CategoriaPost
 
     public static IResult Action(CategoriaRequest categoriaRequest, ApplicationDbContext context)
     {
-        var categoria = new Categoria
-        {
-            Nome = categoriaRequest.Nome,
-            CriadoPor = "Teste",
-            DataCriacao = DateTime.Now,
-            AtualizadoPor = "Test",
-            DataAtualizacao = DateTime.Now
-        };
+        var categoria = new Categoria(categoriaRequest.Nome, "Teste", "Teste");
+
+        if (!categoria.IsValid)
+        {            
+            return Results.ValidationProblem(categoria.Notifications.ConvertToProblemDetails());
+        }            
+
         context.Categorias.Add(categoria);
         context.SaveChanges();
 

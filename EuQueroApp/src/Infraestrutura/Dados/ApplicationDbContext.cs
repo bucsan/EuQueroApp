@@ -1,4 +1,5 @@
 ﻿using EuQueroApp.Dominio.Produtos;
+using Flunt.Notifications;
 using Microsoft.EntityFrameworkCore;
 
 namespace EuQueroApp.Infraestrutura.Dados;
@@ -12,6 +13,8 @@ public class ApplicationDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
+        builder.Ignore<Notification>();
+
         builder.Entity<Produto>()
             .Property(p => p.Nome).IsRequired();
         builder.Entity<Produto>()
