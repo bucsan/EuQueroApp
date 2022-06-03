@@ -30,6 +30,8 @@ app.UseHttpsRedirection();
 app.MapMethods(CategoriaPost.Template, CategoriaPost.Methods, CategoriaPost.Handle);
 app.MapMethods(CategoriaGetAll.Template, CategoriaGetAll.Methods, CategoriaGetAll.Handle);
 app.MapMethods(CategoriaPut.Template, CategoriaPut.Methods, CategoriaPut.Handle);
+
 app.MapMethods(FuncionarioPost.Template, FuncionarioPost.Methods, FuncionarioPost.Handle);
+app.MapMethods(FuncionarioGetAll.Template, FuncionarioGetAll.Methods, FuncionarioGetAll.Handle);
 
 app.Run();
