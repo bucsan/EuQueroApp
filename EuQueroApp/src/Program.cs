@@ -1,6 +1,6 @@
 ﻿using System.Text;
 using EuQueroApp.Apresentacao.Categorias;
-using EuQueroApp.Apresentacao.Funcionarios;
+using EuQueroApp.Apresentacao.Usuarios;
 using EuQueroApp.Apresentacao.Seguranca;
 using EuQueroApp.Infraestrutura.Dados;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -25,6 +25,8 @@ builder.Services.AddAuthorization(options =>
     .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
     .RequireAuthenticatedUser()
     .Build();
+    options.AddPolicy("UsuarioPolicy", p => p.RequireAuthenticatedUser()
+                                                .RequireClaim("UsuarioCode"));
 });
 builder.Services.AddAuthentication(x =>
 {
@@ -45,7 +47,7 @@ builder.Services.AddAuthentication(x =>
     };
 });
 
-builder.Services.AddScoped<QueryObterFuncionariosClaimNome>();
+builder.Services.AddScoped<QueryObterUsuariosClaimNome>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -67,9 +69,9 @@ app.MapMethods(CategoriaPost.Template, CategoriaPost.Methods, CategoriaPost.Hand
 app.MapMethods(CategoriaGetAll.Template, CategoriaGetAll.Methods, CategoriaGetAll.Handle);
 app.MapMethods(CategoriaPut.Template, CategoriaPut.Methods, CategoriaPut.Handle);
 
-/*Funcionarios*/
-app.MapMethods(FuncionarioPost.Template, FuncionarioPost.Methods, FuncionarioPost.Handle);
-app.MapMethods(FuncionarioGetAll.Template, FuncionarioGetAll.Methods, FuncionarioGetAll.Handle);
+/*Usuarios*/
+app.MapMethods(UsuariosPost.Template, UsuariosPost.Methods, UsuariosPost.Handle);
+app.MapMethods(UsuarioGetAll.Template, UsuarioGetAll.Methods, UsuarioGetAll.Handle);
 
 /*Token*/
 app.MapMethods(TokenPost.Template, TokenPost.Methods, TokenPost.Handle);

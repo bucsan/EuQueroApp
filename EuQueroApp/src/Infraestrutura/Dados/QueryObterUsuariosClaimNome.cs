@@ -1,19 +1,19 @@
 ﻿using Dapper;
-using EuQueroApp.Apresentacao.Funcionarios;
+using EuQueroApp.Apresentacao.Usuarios;
 using Microsoft.Data.SqlClient;
 
 namespace EuQueroApp.Infraestrutura.Dados;
 
-public class QueryObterFuncionariosClaimNome
+public class QueryObterUsuariosClaimNome
 {
     private readonly IConfiguration configuration;
 
-    public QueryObterFuncionariosClaimNome(IConfiguration configuration)
+    public QueryObterUsuariosClaimNome(IConfiguration configuration)
     {
         this.configuration = configuration;
     }
 
-    public IEnumerable<FuncionarioResponse> Execute(int page, int rows)
+    public IEnumerable<UsuarioResponse> Execute(int page, int rows)
     {
         var db = new SqlConnection(configuration["ConnectionString:EuQueroDb"]);
         var query = @"SELECT 
@@ -27,6 +27,6 @@ public class QueryObterFuncionariosClaimNome
                         Nome
                     OFFSET(@page - 1) * @rows ROWS FETCH NEXT @rows ROWS ONLY";
 
-        return db.Query<FuncionarioResponse>(query, new { page, rows });
+        return db.Query<UsuarioResponse>(query, new { page, rows });
     }
 }
