@@ -26,7 +26,7 @@ builder.Services.AddAuthorization(options =>
     .RequireAuthenticatedUser()
     .Build();
     options.AddPolicy("UsuarioPolicy", p => p.RequireAuthenticatedUser()
-                                                .RequireClaim("UsuarioCode"));
+                                             .RequireClaim("UsuarioCode"));
 });
 builder.Services.AddAuthentication(x =>
 {
