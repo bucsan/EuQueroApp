@@ -1,14 +1,4 @@
-﻿using System.Text;
-using EuQueroApp.Apresentacao.Categorias;
-using EuQueroApp.Apresentacao.Usuarios;
-using EuQueroApp.Apresentacao.Seguranca;
-using EuQueroApp.Infraestrutura.Dados;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
-
-var builder = WebApplication.CreateBuilder(args);
+﻿var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSqlServer<ApplicationDbContext>(builder.Configuration["ConnectionString:EuQueroDb"]);
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => 
 {

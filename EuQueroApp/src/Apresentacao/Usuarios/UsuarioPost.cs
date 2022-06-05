@@ -1,8 +1,4 @@
-﻿using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-
-namespace EuQueroApp.Apresentacao.Usuarios;
+﻿namespace EuQueroApp.Apresentacao.Usuarios;
 
 public class UsuariosPost
 {
@@ -11,11 +7,11 @@ public class UsuariosPost
     public static Delegate Handle => Action;
 
     [Authorize(Policy = "UsuarioPolicy")]
-    public static IResult Action(UsuarioRequest usuarioRequest, HttpContext http, UserManager<IdentityUser> userManager)
+    public static async Task<IResult> Action(UsuarioRequest usuarioRequest, HttpContext http, UserManager<IdentityUser> userManager)
     {
         var userId = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
         var newUser = new IdentityUser { UserName = usuarioRequest.Email, Email = usuarioRequest.Email };
-        var result = userManager.CreateAsync(newUser, usuarioRequest.Password).Result;
+        var result = await userManager.CreateAsync(newUser, usuarioRequest.Password);
 
         if (!result.Succeeded)
             return Results.ValidationProblem(result.Errors.ConvertToProblemDetails());
@@ -27,7 +23,7 @@ public class UsuariosPost
             new Claim("CriadoPor", userId),
         };
                 
-        var claimResult = userManager.AddClaimsAsync(newUser, userClaims).Result;
+        var claimResult = await userManager.AddClaimsAsync(newUser, userClaims);
 
         if (!claimResult.Succeeded)
             return Results.BadRequest(result.Errors.First());

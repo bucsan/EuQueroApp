@@ -1,10 +1,4 @@
-﻿using System.Security.Claims;
-using EuQueroApp.Dominio.Produtos;
-using EuQueroApp.Infraestrutura.Dados;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-
-namespace EuQueroApp.Apresentacao.Categorias;
+﻿namespace EuQueroApp.Apresentacao.Categorias;
 
 public class CategoriaPut
 {

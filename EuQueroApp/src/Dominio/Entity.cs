@@ -1,6 +1,4 @@
-﻿using Flunt.Notifications;
-
-namespace EuQueroApp.Dominio;
+﻿namespace EuQueroApp.Dominio;
 
 public abstract class Entity : Notifiable<Notification>
 {

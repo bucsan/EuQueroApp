@@ -1,8 +1,4 @@
-﻿using Dapper;
-using EuQueroApp.Apresentacao.Usuarios;
-using Microsoft.Data.SqlClient;
-
-namespace EuQueroApp.Infraestrutura.Dados;
+﻿namespace EuQueroApp.Infraestrutura.Dados;
 
 public class QueryObterUsuariosClaimNome
 {
@@ -13,7 +9,7 @@ public class QueryObterUsuariosClaimNome
         this.configuration = configuration;
     }
 
-    public IEnumerable<UsuarioResponse> Execute(int page, int rows)
+    public async Task<IEnumerable<UsuarioResponse>> Execute(int page, int rows)
     {
         var db = new SqlConnection(configuration["ConnectionString:EuQueroDb"]);
         var query = @"SELECT 
@@ -27,6 +23,6 @@ public class QueryObterUsuariosClaimNome
                         Nome
                     OFFSET(@page - 1) * @rows ROWS FETCH NEXT @rows ROWS ONLY";
 
-        return db.Query<UsuarioResponse>(query, new { page, rows });
+        return await db.QueryAsync<UsuarioResponse>(query, new { page, rows });
     }
 }

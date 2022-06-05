@@ -1,7 +1,4 @@
-﻿using Flunt.Notifications;
-using Microsoft.AspNetCore.Identity;
-
-namespace EuQueroApp.Apresentacao;
+﻿namespace EuQueroApp.Apresentacao;
 
 public static class ProblemDetailsExtensions
 {

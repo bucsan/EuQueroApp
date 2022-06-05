@@ -1,6 +1,4 @@
-﻿using Flunt.Validations;
-
-namespace EuQueroApp.Dominio.Produtos;
+﻿namespace EuQueroApp.Dominio.Produtos;
 
 public class Categoria : Entity
 {

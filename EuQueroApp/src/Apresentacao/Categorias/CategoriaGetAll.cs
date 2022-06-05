@@ -1,6 +1,4 @@
-﻿using EuQueroApp.Infraestrutura.Dados;
-
-namespace EuQueroApp.Apresentacao.Categorias;
+﻿namespace EuQueroApp.Apresentacao.Categorias;
 
 public class CategoriaGetAll
 {
@@ -11,7 +9,7 @@ public class CategoriaGetAll
     public static IResult Action(ApplicationDbContext context)
     {
         var categorias = context.Categorias.ToList();
-        var response = categorias.Select(c => new CategoriaResponse { Id = c.Id, Nome = c.Nome, Ativo = c.Ativo });
+        var response = categorias.Select(c => new CategoriaResponse( c.Id, c.Nome, c.Ativo));
 
         return Results.Ok(response);
     }

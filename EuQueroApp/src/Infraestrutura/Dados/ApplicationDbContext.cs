@@ -1,10 +1,4 @@
-﻿using EuQueroApp.Dominio.Produtos;
-using Flunt.Notifications;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-
-namespace EuQueroApp.Infraestrutura.Dados;
+﻿namespace EuQueroApp.Infraestrutura.Dados;
 
 public class ApplicationDbContext : IdentityDbContext<IdentityUser>
 {

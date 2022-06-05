@@ -1,7 +1,4 @@
-﻿using EuQueroApp.Infraestrutura.Dados;
-using Microsoft.AspNetCore.Authorization;
-
-namespace EuQueroApp.Apresentacao.Usuarios;
+﻿namespace EuQueroApp.Apresentacao.Usuarios;
 
 public class UsuarioGetAll
 {
@@ -9,9 +6,10 @@ public class UsuarioGetAll
     public static string[] Methods => new string[] { HttpMethod.Get.ToString() };
     public static Delegate Handle => Action;
 
-    [Authorize(Policy = "Usuario005Policy")]
-    public static IResult Action(int? page, int? rows, QueryObterUsuariosClaimNome query)
+    [Authorize(Policy = "UsuarioPolicy")]
+    public static async Task<IResult> Action(int? page, int? rows, QueryObterUsuariosClaimNome query)
     {
-        return Results.Ok(query.Execute(page.Value, rows.Value));
+        var result = await query.Execute(page.Value, rows.Value);
+        return Results.Ok(result);
     }
 }
