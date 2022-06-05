@@ -1,4 +1,5 @@
-﻿using EuQueroApp.Dominio.Produtos;
+﻿using System.Security.Claims;
+using EuQueroApp.Dominio.Produtos;
 using EuQueroApp.Infraestrutura.Dados;
 using Microsoft.AspNetCore.Authorization;
 
@@ -9,10 +10,12 @@ public class CategoriaPost
     public static string Template => "/categorias";
     public static string[] Methods => new string[] { HttpMethod.Post.ToString() };
     public static Delegate Handle => Action;
-        
-    public static IResult Action(CategoriaRequest categoriaRequest, ApplicationDbContext context)
+
+    [Authorize(Policy = "UsuarioPolicy")]
+    public static IResult Action(CategoriaRequest categoriaRequest, HttpContext http, ApplicationDbContext context)
     {
-        var categoria = new Categoria(categoriaRequest.Nome, "Teste", "Teste");
+        var userId = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
+        var categoria = new Categoria(categoriaRequest.Nome, userId, userId);
 
         if (!categoria.IsValid)
         {            

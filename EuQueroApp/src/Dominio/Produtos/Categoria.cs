@@ -29,10 +29,12 @@ public class Categoria : Entity
         AddNotifications(contrato);
     }
 
-    public void Atualizar(string nome, bool ativo)
+    public void Atualizar(string nome, bool ativo, string atualizadoPor)
     {
         Ativo = ativo;
         Nome = nome;
+        AtualizadoPor = atualizadoPor;
+        DataAtualizacao = DateTime.Now;
 
         Validate();
     }

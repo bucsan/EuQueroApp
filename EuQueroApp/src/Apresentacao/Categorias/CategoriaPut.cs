@@ -1,5 +1,7 @@
-﻿using EuQueroApp.Dominio.Produtos;
+﻿using System.Security.Claims;
+using EuQueroApp.Dominio.Produtos;
 using EuQueroApp.Infraestrutura.Dados;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EuQueroApp.Apresentacao.Categorias;
@@ -10,14 +12,16 @@ public class CategoriaPut
     public static string[] Methods => new string[] { HttpMethod.Put.ToString() };
     public static Delegate Handle => Action;
 
-    public static IResult Action([FromRoute] Guid id, CategoriaRequest categoriaRequest, ApplicationDbContext context)
+    [Authorize(Policy = "UsuarioPolicy")]
+    public static IResult Action([FromRoute] Guid id, CategoriaRequest categoriaRequest, HttpContext http, ApplicationDbContext context)
     {
+        var userId = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
         var categoria = context.Categorias.Where(c => c.Id == id).FirstOrDefault();
 
         if (categoria == null)
             return Results.NotFound();
 
-        categoria.Atualizar(categoriaRequest.Nome, categoriaRequest.Ativo);
+        categoria.Atualizar(categoriaRequest.Nome, categoriaRequest.Ativo, userId);
 
         if (!categoria.IsValid)
             return Results.ValidationProblem(categoria.Notifications.ConvertToProblemDetails());
