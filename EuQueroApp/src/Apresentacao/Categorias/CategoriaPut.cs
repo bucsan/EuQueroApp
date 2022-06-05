@@ -7,10 +7,10 @@ public class CategoriaPut
     public static Delegate Handle => Action;
 
     [Authorize(Policy = "UsuarioPolicy")]
-    public static IResult Action([FromRoute] Guid id, CategoriaRequest categoriaRequest, HttpContext http, ApplicationDbContext context)
+    public static async Task<IResult> Action([FromRoute] Guid id, CategoriaRequest categoriaRequest, HttpContext http, ApplicationDbContext context)
     {
         var userId = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
-        var categoria = context.Categorias.Where(c => c.Id == id).FirstOrDefault();
+        var categoria = await context.Categorias.Where(c => c.Id == id).FirstOrDefaultAsync();
 
         if (categoria == null)
             return Results.NotFound();
@@ -20,7 +20,7 @@ public class CategoriaPut
         if (!categoria.IsValid)
             return Results.ValidationProblem(categoria.Notifications.ConvertToProblemDetails());
 
-        context.SaveChanges();
+        await context.SaveChangesAsync();
 
         return Results.Ok();
     }

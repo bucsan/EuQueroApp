@@ -1,4 +1,6 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+﻿using Microsoft.AspNetCore.Diagnostics;
+
+var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSqlServer<ApplicationDbContext>(builder.Configuration["ConnectionString:EuQueroDb"]);
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => 
 {
@@ -68,5 +70,20 @@ app.MapMethods(UsuarioGetAll.Template, UsuarioGetAll.Methods, UsuarioGetAll.Hand
 
 /*Token*/
 app.MapMethods(TokenPost.Template, TokenPost.Methods, TokenPost.Handle);
+
+/*Filter Error*/
+app.UseExceptionHandler("/error");
+app.Map("/error", (HttpContext http) =>
+{
+    var error = http.Features?.Get<IExceptionHandlerFeature>()?.Error;
+
+    if(error != null)
+    {
+        if (error is SqlException)
+            return Results.Problem(title: "Banco de dados offline", statusCode: 500);
+    }
+
+    return Results.Problem(title: "Ocorreu um erro", statusCode: 500);
+});
 
 app.Run();
