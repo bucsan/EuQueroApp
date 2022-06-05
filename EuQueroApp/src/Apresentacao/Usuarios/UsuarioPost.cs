@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 
 namespace EuQueroApp.Apresentacao.Usuarios;
@@ -9,10 +10,12 @@ public class UsuariosPost
     public static string[] Methods => new string[] { HttpMethod.Post.ToString() };
     public static Delegate Handle => Action;
 
-    public static IResult Action(UsuarioRequest usuarioRequest, UserManager<IdentityUser> userManager)
+    [Authorize(Policy = "UsuarioPolicy")]
+    public static IResult Action(UsuarioRequest usuarioRequest, HttpContext http, UserManager<IdentityUser> userManager)
     {
-        var user = new IdentityUser { UserName = usuarioRequest.Email, Email = usuarioRequest.Email };
-        var result = userManager.CreateAsync(user, usuarioRequest.Password).Result;
+        var userId = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
+        var newUser = new IdentityUser { UserName = usuarioRequest.Email, Email = usuarioRequest.Email };
+        var result = userManager.CreateAsync(newUser, usuarioRequest.Password).Result;
 
         if (!result.Succeeded)
             return Results.ValidationProblem(result.Errors.ConvertToProblemDetails());
@@ -20,14 +23,15 @@ public class UsuariosPost
         var userClaims = new List<Claim> 
         {
             new Claim("UsuarioCodigo", usuarioRequest.UsuarioCodigo),
-            new Claim("Nome", usuarioRequest.Nome)
+            new Claim("Nome", usuarioRequest.Nome),
+            new Claim("CriadoPor", userId),
         };
                 
-        var claimResult = userManager.AddClaimsAsync(user, userClaims).Result;
+        var claimResult = userManager.AddClaimsAsync(newUser, userClaims).Result;
 
         if (!claimResult.Succeeded)
             return Results.BadRequest(result.Errors.First());
 
-        return Results.Created($"/usuarios/{user.Id}", user.Id);
+        return Results.Created($"/usuarios/{newUser.Id}", newUser.Id);
     }
 }
