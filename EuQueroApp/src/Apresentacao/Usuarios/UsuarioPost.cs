@@ -7,7 +7,10 @@ public class UsuariosPost
     public static Delegate Handle => Action;
 
     [Authorize(Policy = "UsuarioPolicy")]
-    public static async Task<IResult> Action(UsuarioRequest usuarioRequest, HttpContext http, UserManager<IdentityUser> userManager)
+    public static async Task<IResult> Action(
+        UsuarioRequest usuarioRequest, 
+        HttpContext http, 
+        UserManager<IdentityUser> userManager)
     {
         var userId = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
         var newUser = new IdentityUser { UserName = usuarioRequest.Email, Email = usuarioRequest.Email };

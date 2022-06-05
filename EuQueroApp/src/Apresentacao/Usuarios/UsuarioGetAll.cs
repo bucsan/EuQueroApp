@@ -7,7 +7,10 @@ public class UsuarioGetAll
     public static Delegate Handle => Action;
 
     [Authorize(Policy = "UsuarioPolicy")]
-    public static async Task<IResult> Action(int? page, int? rows, QueryObterUsuariosClaimNome query)
+    public static async Task<IResult> Action(
+        int? page, 
+        int? rows, 
+        QueryObterUsuariosClaimNome query)
     {
         var result = await query.Execute(page.Value, rows.Value);
         return Results.Ok(result);

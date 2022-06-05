@@ -7,7 +7,11 @@ public class CategoriaPut
     public static Delegate Handle => Action;
 
     [Authorize(Policy = "UsuarioPolicy")]
-    public static async Task<IResult> Action([FromRoute] Guid id, CategoriaRequest categoriaRequest, HttpContext http, ApplicationDbContext context)
+    public static async Task<IResult> Action(
+        [FromRoute] Guid id, 
+        CategoriaRequest categoriaRequest, 
+        HttpContext http, 
+        ApplicationDbContext context)
     {
         var userId = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
         var categoria = await context.Categorias.Where(c => c.Id == id).FirstOrDefaultAsync();

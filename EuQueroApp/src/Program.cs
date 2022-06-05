@@ -1,6 +1,19 @@
-﻿using Microsoft.AspNetCore.Diagnostics;
+﻿using Serilog;
+using Serilog.Sinks.MSSqlServer;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.WebHost.UseSerilog((context, configuration) =>
+{
+    configuration
+        .WriteTo.Console()
+        .WriteTo.MSSqlServer(
+            context.Configuration["ConnectionString:EuQueroDb"],
+            sinkOptions: new MSSqlServerSinkOptions()
+            {
+                AutoCreateSqlTable = true,
+                TableName = "LogApi"
+            });
+});
 builder.Services.AddSqlServer<ApplicationDbContext>(builder.Configuration["ConnectionString:EuQueroDb"]);
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => 
 {
@@ -83,7 +96,7 @@ app.Map("/error", (HttpContext http) =>
             return Results.Problem(title: "Banco de dados offline", statusCode: 500);
     }
 
-    return Results.Problem(title: "Ocorreu um erro", statusCode: 500);
+    return Results.Problem(title: "Ocorreu um erro interno", statusCode: 500);
 });
 
 app.Run();

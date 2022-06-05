@@ -7,8 +7,14 @@ public class TokenPost
     public static Delegate Handle => Action;
 
     [AllowAnonymous]
-    public static async Task<IResult> Action(LoginRequest loginRequest, IConfiguration configuration, UserManager<IdentityUser> userManager)
+    public static async Task<IResult> Action(
+        LoginRequest loginRequest, 
+        IConfiguration configuration, 
+        UserManager<IdentityUser> userManager,
+        ILogger<TokenPost> log)
     {
+        log.LogInformation("Obtendo o Token");
+        
         var user = await userManager.FindByEmailAsync(loginRequest.Email);
         if (user == null)
             Results.BadRequest();

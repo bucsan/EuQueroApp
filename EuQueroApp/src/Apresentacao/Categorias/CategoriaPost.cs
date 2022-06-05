@@ -7,7 +7,10 @@ public class CategoriaPost
     public static Delegate Handle => Action;
 
     [Authorize(Policy = "UsuarioPolicy")]
-    public static async Task<IResult> Action(CategoriaRequest categoriaRequest, HttpContext http, ApplicationDbContext context)
+    public static async Task<IResult> Action(
+        CategoriaRequest categoriaRequest, 
+        HttpContext http, 
+        ApplicationDbContext context)
     {
         var userId = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
         var categoria = new Categoria(categoriaRequest.Nome, userId, userId);
