@@ -14,7 +14,7 @@ public class ProdutoPost
     {
         var userId = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
         var categoria = await context.Categorias.FirstOrDefaultAsync(c => c.Id == produtoRequest.CategoriaId);
-        var produto = new Produto(produtoRequest.Nome, categoria, produtoRequest.Descricao, produtoRequest.EmEstoque, userId);
+        var produto = new Produto(produtoRequest.Nome, categoria, produtoRequest.Descricao, produtoRequest.EmEstoque, produtoRequest.Preco, userId);
 
         if (!produto.IsValid)
             return Results.ValidationProblem(produto.Notifications.ConvertToProblemDetails());
