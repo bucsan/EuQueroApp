@@ -87,6 +87,7 @@ app.MapMethods(UsuarioGetAll.Template, UsuarioGetAll.Methods, UsuarioGetAll.Hand
 app.MapMethods(ProdutoPost.Template, ProdutoPost.Methods, ProdutoPost.Handle);
 app.MapMethods(ProdutoGetAll.Template, ProdutoGetAll.Methods, ProdutoGetAll.Handle);
 app.MapMethods(ProdutoGet.Template, ProdutoGet.Methods, ProdutoGet.Handle);
+app.MapMethods(ProdutoGetVitrine.Template, ProdutoGetVitrine.Methods, ProdutoGetVitrine.Handle);
 
 /*Token*/
 app.MapMethods(TokenPost.Template, TokenPost.Methods, TokenPost.Handle);

@@ -15,7 +15,7 @@ public class ProdutoGet
         if (produto == null)
             return Results.NotFound();
         
-        var results = new ProdutoResponse(produto.Nome, produto.Categoria.Nome, produto.Descricao, produto.EmEstoque, produto.Ativo);
+        var results = new ProdutoResponse(produto.Nome, produto.Categoria.Nome, produto.Descricao, produto.EmEstoque, produto.Preco, produto.Ativo);
         return Results.Ok(results);
     }
 }
