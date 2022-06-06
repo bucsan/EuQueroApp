@@ -16,7 +16,7 @@ public class ProdutoGetVitrine
         if (row > 10)
             return Results.Problem(title: "Limite é de 10 registros por página!", statusCode: 400);
 
-        var queryBase = context.Produtos.Include(p => p.Categoria)
+        var queryBase = context.Produtos.AsNoTracking().Include(p => p.Categoria)
             .Where(p => p.EmEstoque && p.Categoria.Ativo);
 
         if(orderBy == "nome")
