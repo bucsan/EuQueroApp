@@ -92,6 +92,7 @@ app.MapMethods(ProdutoGetVitrine.Template, ProdutoGetVitrine.Methods, ProdutoGet
 
 /*Clientes*/
 app.MapMethods(ClientePost.Template, ClientePost.Methods, ClientePost.Handle);
+app.MapMethods(ClienteGet.Template, ClienteGet.Methods, ClienteGet.Handle);
 
 /*Token*/
 app.MapMethods(TokenPost.Template, TokenPost.Methods, TokenPost.Handle);
