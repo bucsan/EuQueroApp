@@ -8,27 +8,21 @@ public class ClientePost
 
     [AllowAnonymous]
     public static async Task<IResult> Action(
-        ClienteRequest clienteRequest, 
-        HttpContext http, 
-        UserManager<IdentityUser> userManager)
+        ClienteRequest clienteRequest,
+        UsuariosCriar usuariosCriar)
     {
-        var newUser = new IdentityUser { UserName = clienteRequest.Email, Email = clienteRequest.Email };
-        var result = await userManager.CreateAsync(newUser, clienteRequest.Password);
-
-        if (!result.Succeeded)
-            return Results.ValidationProblem(result.Errors.ConvertToProblemDetails());
-
-        var userClaims = new List<Claim> 
+        var userClaims = new List<Claim>
         {
             new Claim("Cpf", clienteRequest.Cpf),
-            new Claim("Nome", clienteRequest.Nome)            
+            new Claim("Nome", clienteRequest.Nome)
         };
-                
-        var claimResult = await userManager.AddClaimsAsync(newUser, userClaims);
 
-        if (!claimResult.Succeeded)
-            return Results.BadRequest(result.Errors.First());
+        (IdentityResult identity, string userId) result = 
+            await usuariosCriar.Criar(clienteRequest.Email, clienteRequest.Password, userClaims);
 
-        return Results.Created($"/clientes/{newUser.Id}", newUser.Id);
+        if (!result.identity.Succeeded)
+            return Results.ValidationProblem(result.identity.Errors.ConvertToProblemDetails());
+        
+        return Results.Created($"/clientes/{result.userId}", result.userId);
     }
 }

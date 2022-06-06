@@ -1,4 +1,5 @@
-﻿using Serilog;
+﻿using EuQueroApp.Dominio.Usuarios;
+using Serilog;
 using Serilog.Sinks.MSSqlServer;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -55,7 +56,9 @@ builder.Services.AddAuthentication(x =>
     };
 });
 
+/*Serviços*/
 builder.Services.AddScoped<QueryObterUsuariosClaimNome>();
+builder.Services.AddScoped<UsuariosCriar>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

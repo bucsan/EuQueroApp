@@ -10,27 +10,22 @@ public class UsuariosPost
     public static async Task<IResult> Action(
         UsuarioRequest usuarioRequest, 
         HttpContext http, 
-        UserManager<IdentityUser> userManager)
+        UsuariosCriar usuariosCriar)
     {
         var userId = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
-        var newUser = new IdentityUser { UserName = usuarioRequest.Email, Email = usuarioRequest.Email };
-        var result = await userManager.CreateAsync(newUser, usuarioRequest.Password);
-
-        if (!result.Succeeded)
-            return Results.ValidationProblem(result.Errors.ConvertToProblemDetails());
-
-        var userClaims = new List<Claim> 
+        var userClaims = new List<Claim>
         {
             new Claim("UsuarioCodigo", usuarioRequest.UsuarioCodigo),
             new Claim("Nome", usuarioRequest.Nome),
             new Claim("CriadoPor", userId),
         };
+
+        (IdentityResult identity, string userId) result =
+            await usuariosCriar.Criar(usuarioRequest.Email, usuarioRequest.Password, userClaims);
+
+        if (!result.identity.Succeeded)
+            return Results.ValidationProblem(result.identity.Errors.ConvertToProblemDetails());
                 
-        var claimResult = await userManager.AddClaimsAsync(newUser, userClaims);
-
-        if (!claimResult.Succeeded)
-            return Results.BadRequest(result.Errors.First());
-
-        return Results.Created($"/usuarios/{newUser.Id}", newUser.Id);
+        return Results.Created($"/usuarios/{result.userId}", result.userId);
     }
 }
