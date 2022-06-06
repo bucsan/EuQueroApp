@@ -1,4 +1,6 @@
-﻿using Serilog;
+﻿using System.Text.Json;
+using EuQueroApp.Apresentacao.Produtos;
+using Serilog;
 using Serilog.Sinks.MSSqlServer;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -81,6 +83,11 @@ app.MapMethods(CategoriaPut.Template, CategoriaPut.Methods, CategoriaPut.Handle)
 app.MapMethods(UsuariosPost.Template, UsuariosPost.Methods, UsuariosPost.Handle);
 app.MapMethods(UsuarioGetAll.Template, UsuarioGetAll.Methods, UsuarioGetAll.Handle);
 
+/*Produtos*/
+app.MapMethods(ProdutoPost.Template, ProdutoPost.Methods, ProdutoPost.Handle);
+app.MapMethods(ProdutoGetAll.Template, ProdutoGetAll.Methods, ProdutoGetAll.Handle);
+app.MapMethods(ProdutoGet.Template, ProdutoGet.Methods, ProdutoGet.Handle);
+
 /*Token*/
 app.MapMethods(TokenPost.Template, TokenPost.Methods, TokenPost.Handle);
 
@@ -94,6 +101,12 @@ app.Map("/error", (HttpContext http) =>
     {
         if (error is SqlException)
             return Results.Problem(title: "Banco de dados offline", statusCode: 500);
+        else if (error is BadHttpRequestException)
+            return Results.Problem(title: "Erro ao converter o dado para outro tipo. Verifique as infromações enviadas!", statusCode: 500);
+        else if(error is JsonException)
+            return Results.Problem(title: "Erro ao converter o dado para outro tipo. Verifique as infromações enviadas!", statusCode: 500);
+        else if (error is FormatException)
+            return Results.Problem(title: "Erro ao converter o dado para outro tipo. Verifique as infromações enviadas!", statusCode: 500);
     }
 
     return Results.Problem(title: "Ocorreu um erro interno", statusCode: 500);
