@@ -8,27 +8,25 @@ public class ProdutoGetVitrine
 
     [AllowAnonymous]
     public static async Task<IResult> Action(
-        int? page,
-        int? row,
-        string? orderBy,
-        ApplicationDbContext context)
+        ApplicationDbContext context,
+        int page = 1,
+        int row = 10,
+        string? orderBy = "nome")
     {
-        if(page == null)
-            page = 1;
-        if(row == null)
-            row = 10;
-        if (string.IsNullOrEmpty(orderBy))
-            orderBy = "nome";
+        if (row > 10)
+            return Results.Problem(title: "Limite é de 10 registros por página!", statusCode: 400);
 
         var queryBase = context.Produtos.Include(p => p.Categoria)
             .Where(p => p.EmEstoque && p.Categoria.Ativo);
 
-        if(orderBy == "name")
+        if(orderBy == "nome")
             queryBase = queryBase.OrderBy(p => p.Nome);
-        else
+        else if (orderBy == "preco")
             queryBase = queryBase.OrderBy(p => p.Preco);
+        else
+            return Results.Problem(title: "A ordenação de deve ser por Nome ou Preço!", statusCode: 400);
 
-        var queryFilter = queryBase.Skip((page.Value - 1) * row.Value).Take(row.Value);
+        var queryFilter = queryBase.Skip((page - 1) * row).Take(row);
 
         var produtos = queryFilter.ToList();
 
