@@ -61,6 +61,7 @@ builder.Services.AddAuthentication(x =>
 /*Serviços*/
 builder.Services.AddScoped<QueryObterUsuariosClaimNome>();
 builder.Services.AddScoped<UsuariosCriar>();
+builder.Services.AddScoped<QueryObterProdutosVendidos>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -91,6 +92,8 @@ app.MapMethods(ProdutoPost.Template, ProdutoPost.Methods, ProdutoPost.Handle);
 app.MapMethods(ProdutoGetAll.Template, ProdutoGetAll.Methods, ProdutoGetAll.Handle);
 app.MapMethods(ProdutoGet.Template, ProdutoGet.Methods, ProdutoGet.Handle);
 app.MapMethods(ProdutoGetVitrine.Template, ProdutoGetVitrine.Methods, ProdutoGetVitrine.Handle);
+app.MapMethods(ProdutoVendidosGet.Template, ProdutoVendidosGet.Methods, ProdutoVendidosGet.Handle);
+
 
 /*Clientes*/
 app.MapMethods(ClientePost.Template, ClientePost.Methods, ClientePost.Handle);
