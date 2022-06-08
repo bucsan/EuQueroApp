@@ -9,6 +9,7 @@ public class Produto : Entity
     public bool EmEstoque { get; private set; }
     public bool Ativo { get; private set; } = true;
     public decimal Preco { get; private set; }
+    public ICollection<Pedido> Pedidos { get; private set; }
 
     private Produto() { }
 

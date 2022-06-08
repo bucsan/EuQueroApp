@@ -30,7 +30,7 @@ public class ProdutoGetVitrine
 
         var produtos = queryFilter.ToList();
 
-        var results = produtos.Select(p => new ProdutoResponse(p.Nome, p.Categoria.Nome, p.Descricao, p.EmEstoque, p.Preco, p.Ativo));
+        var results = produtos.Select(p => new ProdutoResponse(p.Id, p.Nome, p.Categoria.Nome, p.Descricao, p.EmEstoque, p.Preco, p.Ativo));
         return Results.Ok(results);
     }
 }

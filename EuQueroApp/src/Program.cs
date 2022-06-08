@@ -35,6 +35,8 @@ builder.Services.AddAuthorization(options =>
                                              .RequireClaim("UsuarioCodigo"));
     options.AddPolicy("Usuario005Policy", p => p.RequireAuthenticatedUser()
                                              .RequireClaim("UsuarioCodigo", "005"));
+    options.AddPolicy("CpfPolicy", p => p.RequireAuthenticatedUser()
+                                             .RequireClaim("Cpf"));
 });
 builder.Services.AddAuthentication(x =>
 {
@@ -93,6 +95,10 @@ app.MapMethods(ProdutoGetVitrine.Template, ProdutoGetVitrine.Methods, ProdutoGet
 /*Clientes*/
 app.MapMethods(ClientePost.Template, ClientePost.Methods, ClientePost.Handle);
 app.MapMethods(ClienteGet.Template, ClienteGet.Methods, ClienteGet.Handle);
+
+/*Pedidos*/
+app.MapMethods(PedidoPost.Template, PedidoPost.Methods, PedidoPost.Handle);
+app.MapMethods(PedidoGet.Template, PedidoGet.Methods, PedidoGet.Handle);
 
 /*Token*/
 app.MapMethods(TokenPost.Template, TokenPost.Methods, TokenPost.Handle);

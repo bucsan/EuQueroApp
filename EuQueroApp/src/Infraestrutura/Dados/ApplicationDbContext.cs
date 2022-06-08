@@ -4,6 +4,7 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
 {
     public DbSet<Produto> Produtos { get; set; }
     public DbSet<Categoria> Categorias { get; set; }
+    public DbSet<Pedido> Pedidos { get; set; }
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
@@ -22,6 +23,15 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
 
         builder.Entity<Categoria>()
             .Property(c => c.Nome).IsRequired();
+
+        builder.Entity<Pedido>()
+           .Property(o => o.ClienteId).IsRequired();
+        builder.Entity<Pedido>()
+           .Property(o => o.EnderecoEntrega).IsRequired();
+        builder.Entity<Pedido>()
+            .HasMany(o => o.Produtos)
+            .WithMany(p => p.Pedidos)
+            .UsingEntity(x => x.ToTable("PedidoProdutos"));
     }
 
     protected override void ConfigureConventions(ModelConfigurationBuilder configuration)

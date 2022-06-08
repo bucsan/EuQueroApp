@@ -26,13 +26,17 @@
     <Using Include="System.Text.Json" />
 
     <Using Include="EuQueroApp.Dominio.Produtos" />
-    <Using Include="EuQueroApp.Dominio.Usuarios"/>
+    <Using Include="EuQueroApp.Dominio.Usuarios" />
+    <Using Include="EuQueroApp.Dominio.Pedidos" />
+    
     <Using Include="EuQueroApp.Infraestrutura.Dados" />
+    
     <Using Include="EuQueroApp.Apresentacao.Usuarios" />
     <Using Include="EuQueroApp.Apresentacao.Seguranca" />
     <Using Include="EuQueroApp.Apresentacao.Categorias" />
     <Using Include="EuQueroApp.Apresentacao.Produtos" />
     <Using Include="EuQueroApp.Apresentacao.Clientes" />
+    <Using Include="EuQueroApp.Apresentacao.Pedidos" />
   </ItemGroup>
   
   <ItemGroup>
